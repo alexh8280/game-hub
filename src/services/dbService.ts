@@ -11,14 +11,12 @@ import {
   GetItemCommandInput,
   PutItemCommandInput,
 } from "@aws-sdk/client-dynamodb";
-import { v4 as uuidv4 } from "uuid";
-
 const REGION = "us-east-1";
 const dbClient = new DynamoDBClient({
   region: REGION,
   credentials: {
-    accessKeyId: "AKIASZNBCOKICIY3RMMT",
-    secretAccessKey: "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",
+    accessKeyId: "",
+    secretAccessKey: "",
   },
 });
 const TABLE_NAME = "gamehub-user-data";
