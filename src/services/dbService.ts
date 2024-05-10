@@ -14,10 +14,6 @@ import {
 const REGION = "us-east-1";
 const dbClient = new DynamoDBClient({
   region: REGION,
-  // credentials: {
-  //   accessKeyId: "AKIASZNBCOKICIY3RMMT",
-  //   secretAccessKey: "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",
-  // },
 });
 const TABLE_NAME = "gamehub-user-data";
 
