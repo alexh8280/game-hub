@@ -1,30 +1,16 @@
 // dbService.ts
 import {
-  DynamoDBClient,
-  PutItemCommand,
-  GetItemCommand,
-  QueryCommand,
-  AttributeValue,
-  ScanCommand,
-  QueryCommandInput,
-  ScanCommandInput,
   GetItemCommandInput,
   PutItemCommandInput,
 } from "@aws-sdk/client-dynamodb";
-const REGION = "us-east-1";
-const dbClient = new DynamoDBClient({
-  region: REGION,
-  credentials: {
-    accessKeyId: "AKIASZNBCOKICIY3RMMT",
-    secretAccessKey: "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",
-  },
-});
-const TABLE_NAME = "gamehub-user-data";
+import axios from "axios";
+export const tableName = "gamehub-user-data";
+const BASE_URL = "http://localhost:5000"; // replace with your server's URL
 
 export async function putItem(params: PutItemCommandInput) {
   try {
-    const data = await dbClient.send(new PutItemCommand(params));
-    return data;
+    const response = await axios.post(`${BASE_URL}/putItem`, params);
+    return response.data;
   } catch (err) {
     console.error("Error putting item:", err);
     throw err;
@@ -33,28 +19,49 @@ export async function putItem(params: PutItemCommandInput) {
 
 export async function getItem(params: GetItemCommandInput) {
   try {
-    const data = await dbClient.send(new GetItemCommand(params));
-    return data;
+    const response = await axios.get(`${BASE_URL}/getItem`, { params });
+    return response.data;
   } catch (err) {
     console.error("Error getting item:", err);
     throw err;
   }
 }
 
-export async function queryItems(params: QueryCommandInput) {
+export async function queryItems(params: any) {
   try {
-    const data = await dbClient.send(new QueryCommand(params));
-    return data;
+    const response = await axios.post(`${BASE_URL}/queryItems`, params);
+    return response.data;
   } catch (err) {
     console.error("Error querying items:", err);
     throw err;
   }
 }
 
-export async function scanItems(params: ScanCommandInput) {
+export async function scanItems(params: {
+  FilterExpression: string;
+  ExpressionAttributeValues: { [key: string]: string };
+}) {
+  // Check if ExpressionAttributeValues is defined
+  if (!params.ExpressionAttributeValues) {
+    throw new Error("ExpressionAttributeValues is undefined");
+  }
+
+  // Format ExpressionAttributeValues for DynamoDB
+  const ExpressionAttributeValues: { [key: string]: { S: string } } = {};
+  for (const key in params.ExpressionAttributeValues) {
+    ExpressionAttributeValues[key] = {
+      S: params.ExpressionAttributeValues[key],
+    };
+  }
+
+  const formattedParams = {
+    ...params,
+    ExpressionAttributeValues,
+  };
+
   try {
-    const data = await dbClient.send(new ScanCommand(params));
-    return data;
+    const response = await axios.post(`${BASE_URL}/scanItems`, formattedParams);
+    return response.data;
   } catch (err) {
     console.error("Error scanning items:", err);
     throw err;
@@ -62,20 +69,13 @@ export async function scanItems(params: ScanCommandInput) {
 }
 
 export async function getUser(userId: string) {
-  const params = {
-    TableName: TABLE_NAME,
-    Key: {
-      userId: { S: userId },
-    },
-  };
-
   try {
-    const data = await dbClient.send(new GetItemCommand(params));
-    return data.Item;
+    const response = await axios.get(`${BASE_URL}/getUser`, {
+      params: { userId },
+    });
+    return response.data;
   } catch (err) {
     console.error("Error getting user:", err);
     throw err;
   }
 }
-
-export const tableName = TABLE_NAME;
