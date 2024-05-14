@@ -11,7 +11,8 @@ import {
   ScanCommandInput,
 } from "@aws-sdk/client-dynamodb";
 
-const dbClient = new DynamoDBClient({});
+const REGION = process.env.AWS_REGION;
+const dbClient = new DynamoDBClient({ region: REGION });
 const TABLE_NAME = "gamehub-user-data";
 
 export async function putItem(params: PutItemCommandInput) {
