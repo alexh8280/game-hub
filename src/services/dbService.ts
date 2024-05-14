@@ -11,7 +11,7 @@ import {
   ScanCommandInput,
 } from "@aws-sdk/client-dynamodb";
 
-const REGION = process.env.AWS_REGION;
+const REGION = "us-east-1";
 const dbClient = new DynamoDBClient({ region: REGION });
 const TABLE_NAME = "gamehub-user-data";
 
