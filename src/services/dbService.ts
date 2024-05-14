@@ -1,16 +1,16 @@
 // dbService.ts
 import {
   DynamoDBClient,
-  PutItemCommand,
   GetItemCommand,
-  QueryCommand,
-  AttributeValue,
-  ScanCommand,
-  QueryCommandInput,
-  ScanCommandInput,
   GetItemCommandInput,
+  PutItemCommand,
   PutItemCommandInput,
+  QueryCommand,
+  QueryCommandInput,
+  ScanCommand,
+  ScanCommandInput,
 } from "@aws-sdk/client-dynamodb";
+
 const REGION = "us-east-1";
 const accessKeyId = process.env.REACT_APP_ACCESS_KEY_ID;
 const secretAccessKey = process.env.REACT_APP_SECRET_ACCESS_KEY;
@@ -30,8 +30,7 @@ const TABLE_NAME = "gamehub-user-data";
 
 export async function putItem(params: PutItemCommandInput) {
   try {
-    const data = await dbClient.send(new PutItemCommand(params));
-    return data;
+    return await dbClient.send(new PutItemCommand(params));
   } catch (err) {
     console.error("Error putting item:", err);
     throw err;
@@ -40,8 +39,7 @@ export async function putItem(params: PutItemCommandInput) {
 
 export async function getItem(params: GetItemCommandInput) {
   try {
-    const data = await dbClient.send(new GetItemCommand(params));
-    return data;
+    return await dbClient.send(new GetItemCommand(params));
   } catch (err) {
     console.error("Error getting item:", err);
     throw err;
@@ -50,8 +48,7 @@ export async function getItem(params: GetItemCommandInput) {
 
 export async function queryItems(params: QueryCommandInput) {
   try {
-    const data = await dbClient.send(new QueryCommand(params));
-    return data;
+    return await dbClient.send(new QueryCommand(params));
   } catch (err) {
     console.error("Error querying items:", err);
     throw err;
@@ -60,8 +57,7 @@ export async function queryItems(params: QueryCommandInput) {
 
 export async function scanItems(params: ScanCommandInput) {
   try {
-    const data = await dbClient.send(new ScanCommand(params));
-    return data;
+    return await dbClient.send(new ScanCommand(params));
   } catch (err) {
     console.error("Error scanning items:", err);
     throw err;
