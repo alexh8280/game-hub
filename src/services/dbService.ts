@@ -11,21 +11,7 @@ import {
   ScanCommandInput,
 } from "@aws-sdk/client-dynamodb";
 
-const REGION = process.env.AWS_REGION;
-const accessKeyId = process.env.AWS_ACCESS_KEY_ID;
-const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
-
-if (!accessKeyId || !secretAccessKey) {
-  throw new Error("AWS credentials not found in environment variables");
-}
-
-const dbClient = new DynamoDBClient({
-  region: REGION,
-  credentials: {
-    accessKeyId,
-    secretAccessKey,
-  },
-});
+const dbClient = new DynamoDBClient({});
 const TABLE_NAME = "gamehub-user-data";
 
 export async function putItem(params: PutItemCommandInput) {
